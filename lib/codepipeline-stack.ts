@@ -7,12 +7,12 @@ export class PuggoCodePipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const githubAccessToken = cdk.SecretValue.secretsManager("github-access-token-1");
+    const githubAccessToken = cdk.SecretValue.secretsManager("github-access-token-name");
 
     const pipeline = new pipelines.CodePipeline(this, "PuggoCodePipeline", {
       pipelineName: "PuggoCodePipeline",
       synth: new pipelines.ShellStep("Synth", {
-        input: pipelines.CodePipelineSource.gitHub("RevApps-io/pug-test-app", "main", {
+        input: pipelines.CodePipelineSource.gitHub("github-repository-name", "main", {
           authentication: githubAccessToken,
         }),
         commands: ["npm i", "npm run build-all", "npx cdk synth"],
